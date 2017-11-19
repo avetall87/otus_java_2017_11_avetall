@@ -99,7 +99,10 @@
                     <obfuscate>true</obfuscate>
                     <options>
                         <option>-allowaccessmodification</option>
-                        <option>-keep class ru.otus.Application</option>
+                        <option>-keep public class ru.otus.Application {
+                            public static void main(java.lang.String[]);
+                            }
+                        </option>
                     </options>
                     <libs>
                         <lib>${java.home}/lib/rt.jar</lib>
