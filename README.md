@@ -1,4 +1,6 @@
 # Курсы "Разработчик Java" в Otus.ru
-Группа № 11
+- Обфускация кода с использованием maven plugin - proguard
 
-Александров Виталий Вячеславович
+*Ресурсы:*
+- https://github.com/wvengen/proguard-maven-plugin
+- http://wvengen.github.io/proguard-maven-plugin/
