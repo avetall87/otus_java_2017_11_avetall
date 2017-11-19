@@ -104,7 +104,6 @@
                     <libs>
                         <lib>${java.home}/lib/rt.jar</lib>
                         <lib>${java.home}/lib/jce.jar</lib>
-                        <lib>${java.home}/lib/ext/sunjce_provider.jar</lib>
                     </libs>
                 </configuration>
                 <dependencies>
