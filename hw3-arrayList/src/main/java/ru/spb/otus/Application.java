@@ -9,7 +9,13 @@ import java.util.ArrayList;
  */
 public class Application {
     public static void main(String[] args) {
+
         MyArrayList<Integer> integers = new MyArrayList<>();
-        integers.add(1);
+
+        for (int i = 0; i <1000; i++) {
+            integers.add(i);
+        }
+
+        System.out.println(integers.size());
     }
 }

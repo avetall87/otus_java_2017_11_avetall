@@ -10,7 +10,10 @@ public class MyArrayList<T> implements List<T> {
     // base properties
     private float loadFactor = .75f;
     private int size;
-    private int initSize = 10;
+    private int capacity = 10;
+
+    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+    private static final Object[] DEFAULT_CAPACITY_EMPTY_ELEMENT_DATA = {};
 
     private Object arr[];
 
@@ -19,19 +22,19 @@ public class MyArrayList<T> implements List<T> {
         createArray();
     }
 
-    public MyArrayList(int initSize) {
-        this.initSize = initSize;
+    public MyArrayList(int capacity) {
+        this.capacity = capacity;
         createArray();
     }
 
-    public MyArrayList(int initSize, float loadFactor) {
-        this.initSize = initSize;
+    public MyArrayList(int capacity, float loadFactor) {
+        this.capacity = capacity;
         this.loadFactor = loadFactor;
         createArray();
     }
 
     private void createArray(){
-        this.arr = new Object[initSize];
+        this.arr = new Object[capacity];
     }
 
     public int size() {
@@ -39,7 +42,7 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     public boolean contains(Object o) {
@@ -47,21 +50,19 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public Iterator<T> iterator() {
-        return null;
+        throw new RuntimeException("Not supported yet !");
     }
 
     public Object[] toArray() {
-        return new Object[0];
+        return Arrays.copyOf(arr, size);
     }
 
     public <T1> T1[] toArray(T1[] a) {
-        return null;
+        throw new RuntimeException("Not supported yet !");
     }
 
     public boolean add(T t) {
-        if(needIncrease()){
-            grow();
-        }
+        ensureCapacityInternal(size+1);
         arr[size] = t;
         size++;
         return true;
@@ -76,11 +77,16 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public boolean addAll(Collection<? extends T> c) {
-        return false;
+        Object[] newArray = c.toArray();
+        int numNew = newArray.length;
+        ensureCapacityInternal(size + numNew);  // Increments modCount
+        System.arraycopy(newArray, 0, arr, size, numNew);
+        size += numNew;
+        return numNew != 0;
     }
 
     public boolean addAll(int index, Collection<? extends T> c) {
-        return false;
+        throw new RuntimeException("Not supported yet !");
     }
 
     public boolean removeAll(Collection<?> c) {
@@ -88,11 +94,13 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public boolean retainAll(Collection<?> c) {
-        return false;
+        throw new RuntimeException("Not supported yet !");
     }
 
     public void clear() {
-
+        // проверить отработает GC или нет ???
+        arr = null;
+        arr = new Object[capacity];
     }
 
     @SuppressWarnings("unchecked")
@@ -120,37 +128,58 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public int indexOf(Object o) {
-        return 0;
+        throw new RuntimeException("Not supported yet !");
     }
 
     public int lastIndexOf(Object o) {
-        return 0;
+        throw new RuntimeException("Not supported yet !");
     }
 
     public ListIterator<T> listIterator() {
-        return null;
+        throw new RuntimeException("Not supported yet !");
     }
 
     public ListIterator<T> listIterator(int index) {
-        return null;
+        throw new RuntimeException("Not supported yet !");
     }
 
     public List<T> subList(int fromIndex, int toIndex) {
-        return null;
-    }
-
-    private void grow(){
-        int oldArrCapacity = size;
-        arr = Arrays.copyOf(arr,oldArrCapacity<<1);
-    }
-
-    private boolean needIncrease(){
-        return (size+1>=arr.length-1);
+        throw new RuntimeException("Not supported yet !");
     }
 
     private void rangeCheck(int index) {
         if (index >= size)
             throw new IndexOutOfBoundsException(outOfBoundsMsg(index));
+    }
+
+    private void ensureCapacityInternal(int minCapacity) {
+        ensureExplicitCapacity(calculateCapacity(arr, minCapacity));
+    }
+
+    private void ensureExplicitCapacity(int minCapacity) {
+        if (minCapacity - arr.length > 0)
+            grow();
+    }
+
+    private int calculateCapacity(Object[] elementData, int minCapacity) {
+        if (elementData == DEFAULT_CAPACITY_EMPTY_ELEMENT_DATA) {
+            return Math.max(capacity, minCapacity);
+        }
+        return minCapacity;
+    }
+
+    private void grow(){
+        int oldArrCapacity = size;
+        int newArrCapacity = oldArrCapacity<<1;
+
+        if(arr.length == MAX_ARRAY_SIZE)
+            throw new OutOfMemoryError();
+
+        if (newArrCapacity - MAX_ARRAY_SIZE > 0){
+            arr = Arrays.copyOf(arr,MAX_ARRAY_SIZE);
+        }else {
+            arr = Arrays.copyOf(arr,oldArrCapacity<<1);
+        }
     }
 
     private String outOfBoundsMsg(int index) {
