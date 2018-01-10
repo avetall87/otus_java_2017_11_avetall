@@ -98,7 +98,6 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public void clear() {
-        // проверить отработает GC или нет ???
         arr = null;
         arr = new Object[capacity];
     }
