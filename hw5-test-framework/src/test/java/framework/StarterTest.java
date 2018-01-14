@@ -1,6 +1,10 @@
 package framework;
 
 import org.junit.*;
+
+import java.util.Arrays;
+import java.util.Collections;
+
 /**
  * Created by avetall  14.01.18.
  */
@@ -37,13 +41,23 @@ public class StarterTest {
     }
 
     @Test
-    public void PositiveAssertEqualsTest() {
+    public void PositiveAssertEqualsSimpleValueTest() {
         Starter.assertEquals(1,1);
+    }
+
+    @Test
+    public void PositiveAssertEqualsObjectsTest() {
+        Starter.assertEquals(Arrays.asList(123),Arrays.asList(123));
     }
 
     @Test(expected = Throwable.class)
     public void NegativeAssertEqualsTest() {
         Starter.assertEquals(1,2);
+    }
+
+    @Test(expected = Throwable.class)
+    public void NegativeAssertEqualsObjectsTest() {
+        Starter.assertEquals(Arrays.asList(123),Arrays.asList(321));
     }
 
 }

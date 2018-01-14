@@ -33,7 +33,7 @@ public class Starter {
     }
 
     /**
-     * Works only for simple object's such as: String, Date, Integer and all who extend Number
+     * Works only for simple object's such as: String, Date, Integer and all who extend Number, etc
      * @param o current object
      * @return String value from toString method
      */
