@@ -47,7 +47,7 @@ public class StarterTest {
 
     @Test
     public void PositiveAssertEqualsObjectsTest() {
-        Starter.assertEquals(Arrays.asList(123),Arrays.asList(123));
+        Starter.assertEquals(Collections.singletonList(123), Collections.singletonList(123));
     }
 
     @Test(expected = Throwable.class)
@@ -57,7 +57,7 @@ public class StarterTest {
 
     @Test(expected = Throwable.class)
     public void NegativeAssertEqualsObjectsTest() {
-        Starter.assertEquals(Arrays.asList(123),Arrays.asList(321));
+        Starter.assertEquals(Collections.singletonList(123), Collections.singletonList(321));
     }
 
 }
