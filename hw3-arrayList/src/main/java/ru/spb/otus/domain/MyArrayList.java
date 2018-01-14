@@ -135,7 +135,7 @@ public class MyArrayList<T> implements List<T> {
     }
 
     public ListIterator<T> listIterator() {
-        throw new RuntimeException("Not supported yet !");
+        return listIterator(0);
     }
 
     public ListIterator<T> listIterator(int index) {

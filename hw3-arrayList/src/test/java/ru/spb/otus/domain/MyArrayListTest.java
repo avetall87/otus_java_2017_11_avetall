@@ -4,6 +4,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by avetall  10.12.17.
  */
@@ -28,34 +32,6 @@ public class MyArrayListTest {
     }
 
     @Test
-    public void contains() {
-    }
-
-    @Test
-    public void iterator() {
-    }
-
-    @Test
-    public void toArray() {
-    }
-
-    @Test
-    public void toArray1() {
-    }
-
-    @Test
-    public void add() {
-    }
-
-    @Test
-    public void remove() {
-    }
-
-    @Test
-    public void containsAll() {
-    }
-
-    @Test
     public void addAll() {
 
         list.add(10);
@@ -71,54 +47,25 @@ public class MyArrayListTest {
     }
 
     @Test
-    public void addAll1() {
+    public void copy(){
+        list.add(10);
+        MyArrayList<Integer> dest = new MyArrayList<>();
+        dest.add(20);
+        Collections.copy(dest,list);
+        Assert.assertEquals(Integer.valueOf(10),dest.get(0));
     }
 
     @Test
-    public void removeAll() {
+    public void sort(){
+        List<Object> objects = new ArrayList<>();
+
+        list.add(10);
+        list.add(5);
+        list.add(15);
+        Collections.sort(list);
+        Assert.assertEquals(Integer.valueOf(5),list.get(0));
+        Assert.assertEquals(Integer.valueOf(10),list.get(1));
+        Assert.assertEquals(Integer.valueOf(15),list.get(2));
     }
 
-    @Test
-    public void retainAll() {
-    }
-
-    @Test
-    public void clear() {
-    }
-
-    @Test
-    public void get() {
-    }
-
-    @Test
-    public void set() {
-    }
-
-    @Test
-    public void add1() {
-    }
-
-    @Test
-    public void remove1() {
-    }
-
-    @Test
-    public void indexOf() {
-    }
-
-    @Test
-    public void lastIndexOf() {
-    }
-
-    @Test
-    public void listIterator() {
-    }
-
-    @Test
-    public void listIterator1() {
-    }
-
-    @Test
-    public void subList() {
-    }
 }
