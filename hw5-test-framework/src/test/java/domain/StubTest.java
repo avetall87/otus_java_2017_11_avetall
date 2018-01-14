@@ -1,6 +1,7 @@
 package domain;
 
-import org.junit.Test;
+
+import framework.reflection.anotation.Test;
 
 /**
  * Created by avetall  11.01.18.
