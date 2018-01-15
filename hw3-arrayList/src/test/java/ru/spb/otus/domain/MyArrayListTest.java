@@ -2,6 +2,7 @@ package ru.spb.otus.domain;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -33,17 +34,11 @@ public class MyArrayListTest {
 
     @Test
     public void addAll() {
-
         list.add(10);
-
-        MyArrayList<Integer> myArrayList = new MyArrayList<>();
-        myArrayList.add(1);
-        myArrayList.add(2);
-        myArrayList.add(3);
-
-        list.addAll(myArrayList);
-
-        Assert.assertTrue(myArrayList.size() == 3);
+        Collections.addAll(list,10,11,12);
+        Assert.assertEquals(list.get(1),Integer.valueOf(10));
+        Assert.assertEquals(list.get(2),Integer.valueOf(11));
+        Assert.assertEquals(list.get(3),Integer.valueOf(12));
     }
 
     @Test
@@ -56,9 +51,8 @@ public class MyArrayListTest {
     }
 
     @Test
+    @Ignore
     public void sort(){
-        List<Object> objects = new ArrayList<>();
-
         list.add(10);
         list.add(5);
         list.add(15);
