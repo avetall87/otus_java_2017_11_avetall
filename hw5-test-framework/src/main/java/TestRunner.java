@@ -20,19 +20,24 @@ public class TestRunner {
     private TestRunner() {
     }
 
-    public static void runTest(String packageName, String className){
+    public static void runTest(String path){
         try {
             ReflectionHelper
-                    .getClassesByName(packageName, className)
+                    .getClassesByName(path)
                     .forEach(TestRunner::runTestInClass);
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
     }
 
+    public static void runTest(Class clazz){
+        runTestInClass(clazz);
+    }
+
     private static void runTestInClass(Class clazz){
         List<Method> methods = Arrays.asList(clazz.getMethods());
         TestClassContext classContext = new TestClassContext();
+
         for (Method method : methods) {
             Annotation[] annotations = method.getDeclaredAnnotations();
             for (Annotation annotation : annotations) {
@@ -53,15 +58,15 @@ public class TestRunner {
     }
 
     private static void invokeTest(TestClassContext context, Class clazz){
-        Object testClass = ReflectionHelper.instantiate(clazz, null);
-
-        ReflectionHelper.callMethod(testClass,context.getBeforeMethodName(), null);
+        String beforeMethodName = context.getBeforeMethodName();
+        String afterMethodName = context.getBeforeMethodName();
 
         context.getTestMethodsName().forEach(methodName->{
-            ReflectionHelper.callMethod(testClass,methodName,null);
+                Object testClass = ReflectionHelper.instantiate(clazz, null);
+                    ReflectionHelper.callMethod(testClass,beforeMethodName, null);
+                    ReflectionHelper.callMethod(testClass,methodName,null);
+                    ReflectionHelper.callMethod(testClass,afterMethodName,null);
         });
-
-        ReflectionHelper.callMethod(testClass,context.getAfterMethodName(),null);
     }
 
     @Getter

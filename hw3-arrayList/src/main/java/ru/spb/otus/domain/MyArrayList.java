@@ -143,12 +143,8 @@ public class MyArrayList<E> implements List<E> {
         if (index < 0 || index > size)
             throw new IndexOutOfBoundsException("Index: "+index);
         return new ListItr(index);
-//        throw new RuntimeException("Not supported yet !");
     }
 
-    /**
-     * An optimized version of AbstractList.ListItr
-     */
     private class ListItr extends MyArrayList.Itr implements ListIterator<E> {
         ListItr(int index) {
             super();
@@ -201,12 +197,9 @@ public class MyArrayList<E> implements List<E> {
         }
     }
 
-    /**
-     * An optimized version of AbstractList.Itr
-     */
     private class Itr implements Iterator<E> {
-        int cursor;       // index of next element to return
-        int lastRet = -1; // index of last element returned; -1 if no such
+        int cursor;
+        int lastRet = -1;
         public boolean hasNext() {
             return cursor != size;
         }

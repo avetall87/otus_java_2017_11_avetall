@@ -95,31 +95,62 @@ public class ReflectionHelper {
     /**
      * Scans all classes accessible from the context class loader which belong to the given package and subpackages.
      *
-     * @param packageName The base package
+     * @param path The base package
      * @return The classes
      * @throws ClassNotFoundException
      * @throws IOException
      */
-    public static List<Class> getClassesByName(String packageName, String className)
-            throws ClassNotFoundException, IOException {
+    public static List<Class> getClassesByName(String path) throws ClassNotFoundException, IOException {
+        String systemPath = path.replace(".", "/");
+
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
         if (classLoader == null)
             throw new RuntimeException("Current class loader is null !");
 
-        Enumeration<URL> resources = classLoader.getResources(packageName.replace('.', '/'));
+        List<Class> result;
+        if((result = getClazz(path)).size() > 0)
+            return result;
+        result = getClassesFromPackage(path, classLoader);
+
+        return result;
+    }
+
+    /**
+     *
+     * @param path
+     * @return
+     */
+    private static List<Class> getClazz(String path){
+        List<Class> list = new ArrayList<>();
+        try {
+            Class clazz = Class.forName(path);
+            list.add(clazz);
+        } catch (ClassNotFoundException e) {
+            System.out.println(path+ " is not a class !");
+        }
+        return list;
+    }
+
+    private static List<Class> getClassesFromPackage(String path, ClassLoader classLoader) throws IOException, ClassNotFoundException {
+        Enumeration<URL> resources = getEnumerations(classLoader, path);
+
         List<File> dirs = new ArrayList<>();
         while (resources.hasMoreElements()) {
             URL resource = resources.nextElement();
             dirs.add(new File(resource.getFile()));
         }
+
         ArrayList<Class> classes = new ArrayList<>();
         for (File directory : dirs) {
-            classes.addAll(findAllClasses(directory, packageName));
+            classes.addAll(findAllClasses(directory, path));
         }
-        return findClassByName(classes,packageName+"."+className);
 
+        return classes;
+    }
 
+    private static Enumeration<URL> getEnumerations(ClassLoader classLoader, String path) throws IOException {
+       return classLoader.getResources(path.replace('.', '/'));
     }
 
     /**
@@ -131,7 +162,7 @@ public class ReflectionHelper {
      * @throws ClassNotFoundException
      */
     private static List<Class> findAllClasses(File directory, String packageName) throws ClassNotFoundException {
-        List<Class> classes = new ArrayList<Class>();
+        List<Class> classes = new ArrayList<>();
         if (!directory.exists()) {
             return classes;
         }
@@ -152,9 +183,4 @@ public class ReflectionHelper {
                 .map(Object::getClass).toArray(Class<?>[]::new);
     }
 
-    private static List<Class> findClassByName(List<Class> classList, String className){
-        return classList.stream()
-                 .filter(cl-> cl.getName().equalsIgnoreCase(className))
-                 .collect(Collectors.toList());
-    }
 }
