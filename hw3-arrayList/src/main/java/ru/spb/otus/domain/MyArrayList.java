@@ -80,7 +80,7 @@ public class MyArrayList<E> implements List<E> {
     public boolean addAll(Collection<? extends E> c) {
         Object[] newArray = c.toArray();
         int numNew = newArray.length;
-        ensureCapacityInternal(size + numNew);  // Increments modCount
+        ensureCapacityInternal(size + numNew);
         System.arraycopy(newArray, 0, arr, size, numNew);
         size += numNew;
         return numNew != 0;
@@ -145,7 +145,7 @@ public class MyArrayList<E> implements List<E> {
         return new ListItr(index);
     }
 
-    private class ListItr extends MyArrayList.Itr implements ListIterator<E> {
+    public class ListItr extends Itr implements ListIterator<E> {
         ListItr(int index) {
             super();
             cursor = index;
@@ -197,7 +197,7 @@ public class MyArrayList<E> implements List<E> {
         }
     }
 
-    private class Itr implements Iterator<E> {
+    public class Itr implements Iterator<E> {
         int cursor;
         int lastRet = -1;
         public boolean hasNext() {

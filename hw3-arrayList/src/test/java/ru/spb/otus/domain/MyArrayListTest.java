@@ -51,7 +51,6 @@ public class MyArrayListTest {
     }
 
     @Test
-    @Ignore
     public void sort(){
         list.add(10);
         list.add(5);
