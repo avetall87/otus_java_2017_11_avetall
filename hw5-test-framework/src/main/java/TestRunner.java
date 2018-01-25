@@ -59,14 +59,19 @@ public class TestRunner {
 
     private static void invokeTest(TestClassContext context, Class clazz){
         String beforeMethodName = context.getBeforeMethodName();
-        String afterMethodName = context.getBeforeMethodName();
+        String afterMethodName = context.getAfterMethodName();
 
         context.getTestMethodsName().forEach(methodName->{
                 Object testClass = ReflectionHelper.instantiate(clazz, null);
-                    ReflectionHelper.callMethod(testClass,beforeMethodName, null);
-                    ReflectionHelper.callMethod(testClass,methodName,null);
-                    ReflectionHelper.callMethod(testClass,afterMethodName,null);
+                    callMethod(testClass,beforeMethodName, null);
+                    callMethod(testClass,methodName,null);
+                    callMethod(testClass,afterMethodName,null);
         });
+    }
+
+    private static void callMethod(Object object, String name, Object[] args){
+        if(object != null && (name != null && !name.equalsIgnoreCase("")))
+            ReflectionHelper.callMethod(object,name,args);
     }
 
     @Getter
