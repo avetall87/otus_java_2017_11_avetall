@@ -7,13 +7,16 @@ import ru.spb.otus.atm.domain.Banknote;
 import ru.spb.otus.atm.domain.BanknoteType;
 import ru.spb.otus.atm.service.Atm;
 import ru.spb.otus.atm.service.exception.EmptyRequestedSumException;
+import ru.spb.otus.atm.service.exception.GiveBanknoteException;
 import ru.spb.otus.atm.service.exception.LargeRequestedSumException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
+import static ru.spb.otus.atm.domain.BanknoteType.*;
 
 /**
  * Created by avetall  28.01.18.
@@ -40,11 +43,11 @@ public class AtmImpl implements Atm {
     public List<Banknote> getBanknotes(Integer sum) {
         checkRequestedSum(sum);
 
-
-
-
-        return null;
+        List<Banknote> result = new ArrayList<>();
+//        store.getNominal()
+        return result;
     }
+
 
     private void checkRequestedSum(Integer sum){
         if (sum == null)
@@ -52,6 +55,9 @@ public class AtmImpl implements Atm {
 
         if (sum > store.getBanknoteSum())
             throw new LargeRequestedSumException();
+
+        if (sum % TEN.getValue() != 0)
+            throw new GiveBanknoteException();
 
     }
 

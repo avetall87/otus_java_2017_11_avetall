@@ -42,6 +42,6 @@ public class AtmApplication {
 
 		System.out.println("Wrong Banknote type: "+receive);
 		System.out.println("Current balance: " + banknoteAtm.getBalance());
-		System.out.println("Sum: "+ banknoteAtm.getSum(487));
+		System.out.println("Sum: "+ banknoteAtm.getSum(490));
 	}
 }

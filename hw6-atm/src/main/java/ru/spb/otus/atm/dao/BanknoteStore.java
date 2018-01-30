@@ -11,6 +11,4 @@ public interface BanknoteStore {
     void add(BanknoteType type, Integer count);
     Integer getSum(Integer count);
     Integer getBanknoteSum();
-    Map<BanknoteType,Integer> computeForSum(Integer sum);
-
 }
