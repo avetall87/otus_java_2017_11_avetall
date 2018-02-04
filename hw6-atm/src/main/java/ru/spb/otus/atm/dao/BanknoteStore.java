@@ -9,6 +9,7 @@ import java.util.Map;
  */
 public interface BanknoteStore {
     void add(BanknoteType type, Integer count);
-    Integer getSum(Integer count);
     Integer getBanknoteSum();
+    Integer getCountBanknotesByType(BanknoteType type);
+    void setBalance(BanknoteType type,Integer count);
 }

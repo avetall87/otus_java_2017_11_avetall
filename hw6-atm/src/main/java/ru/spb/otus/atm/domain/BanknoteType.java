@@ -1,6 +1,6 @@
 package ru.spb.otus.atm.domain;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -26,4 +26,5 @@ public enum BanknoteType {
     public Integer getValue(){
         return this.value;
     }
+
 }

@@ -13,4 +13,8 @@ public class Banknote {
         this.type = type;
     }
 
+    @Override
+    public String toString() {
+        return String.valueOf(type.getValue());
+    }
 }

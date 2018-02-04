@@ -23,6 +23,8 @@ public class AtmApplication {
 
 		List<Integer> dataSet = new ArrayList<>();
 		dataSet.add(10);
+		dataSet.add(10);
+		dataSet.add(10);
 		dataSet.add(20);
 		dataSet.add(30);
 		dataSet.add(50);
@@ -34,6 +36,8 @@ public class AtmApplication {
 		dataSet.add(100);
 		dataSet.add(1000);
 		dataSet.add(1000);
+		dataSet.add(1000);
+		dataSet.add(1000);
 		dataSet.add(5000);
 		dataSet.add(5000);
 		dataSet.add(5000);
@@ -42,6 +46,9 @@ public class AtmApplication {
 
 		System.out.println("Wrong Banknote type: "+receive);
 		System.out.println("Current balance: " + banknoteAtm.getBalance());
-		System.out.println("Sum: "+ banknoteAtm.getSum(490));
+		System.out.println("List banknotes: "+banknoteAtm.getSum(6000));
+		int sum = banknoteAtm.getSum(6000).stream().map(item -> item.getType().getValue()).mapToInt(i -> i).sum();
+		System.out.println("Sum: "+ sum);
+		System.out.println("Balance: "+ (banknoteAtm.getBalance() - sum));
 	}
 }

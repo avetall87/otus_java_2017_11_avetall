@@ -4,9 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.spb.otus.atm.dao.BanknoteStore;
 import ru.spb.otus.atm.domain.BanknoteType;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -23,11 +21,6 @@ public class BanknoteStoreImpl extends HashMap<BanknoteType, Integer> implements
     }
 
     @Override
-    public Integer getSum(Integer count) {
-        return 0;
-    }
-
-    @Override
     public Integer getBanknoteSum() {
         Integer total = 0;
 
@@ -38,13 +31,12 @@ public class BanknoteStoreImpl extends HashMap<BanknoteType, Integer> implements
     }
 
     @Override
-    public Map<BanknoteType, Integer> computeForSum(Integer sum) {
-        Map<BanknoteType, Integer> result = new HashMap<>();
+    public Integer getCountBanknotesByType(BanknoteType type) {
+        return Optional.ofNullable(super.get(type)).orElse(0);
+    }
 
-        Arrays.asList(BanknoteType.values()).forEach(type->{
-              result.put(type,(sum/get(type)));
-        });
+    @Override
+    public void setBalance(BanknoteType type, Integer count) {
 
-        return result;
     }
 }
