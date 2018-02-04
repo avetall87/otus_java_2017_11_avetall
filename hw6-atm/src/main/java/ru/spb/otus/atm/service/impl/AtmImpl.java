@@ -44,11 +44,7 @@ public class AtmImpl implements Atm {
     @Override
     public List<Banknote> getBanknotes(Integer sum) {
         checkRequestedSum(sum);
-
-        List<Banknote> result = new ArrayList<>();
-
-        // java 8
-        final Integer[] calcResult = {0};
+        CalculationObject calculationObject = new CalculationObject(store);
 
         Arrays.stream(BanknoteType.values())
                 .sorted((o1, o2) -> (o2.getValue() > o1.getValue())? 1: -1)
@@ -57,28 +53,24 @@ public class AtmImpl implements Atm {
                     Integer countBanknotesByType = store.getCountBanknotesByType(banknoteType);
 
                     for (int i = 0; i < store.getCountBanknotesByType(banknoteType); i++) {
-                        if (calcResult[0] > sum || banknoteType.getValue() > sum)
+                        if (calculationObject.getCalcResult() > sum || banknoteType.getValue() > sum)
                             return;
 
                         if (banknoteType.getValue().equals(sum)){
-                            result.add(new Banknote(banknoteType));
-                            store.setBalance(banknoteType,countBanknotesByType--);
-                            calcResult[0] += banknoteType.getValue();
+                            calculationObject.fetchBanknote(banknoteType, countBanknotesByType--);
                             return;
                         }else {
-                            if ((calcResult[0] + banknoteType.getValue()) > sum)
+                            if ((calculationObject.getCalcResult() + banknoteType.getValue()) > sum)
                                 return;
 
-                            result.add(new Banknote(banknoteType));
-                            store.setBalance(banknoteType,countBanknotesByType--);
-                            calcResult[0] += banknoteType.getValue();
+                            calculationObject.fetchBanknote(banknoteType, countBanknotesByType--);
                         }
 
                     }
 
                 });
-        checkResult(result,sum);
-        return result;
+        calculationObject.checkResult(sum);
+        return calculationObject.getBanknotes();
     }
 
     private void checkRequestedSum(Integer sum){
@@ -93,21 +85,35 @@ public class AtmImpl implements Atm {
 
     }
 
-    private void computeResult(Integer[] calcResult, BanknoteType banknoteType, Integer countBanknotesType){
-        store.setBalance(banknoteType,countBanknotesType--);
-        calcResult[0] += banknoteType.getValue();
-    }
-
-    private void checkResult(List<Banknote> banknotes, Integer sum){
-        int total = banknotes.stream().map(item-> item.getType().getValue()).mapToInt(i->i).sum();
-
-        if(total < sum)
-            throw new NotEnoughMoneyException();
-    }
-
     @Override
     public Integer balance() {
         return store.getBanknoteSum();
+    }
+
+    @Getter
+    @Setter
+    private class CalculationObject{
+        private List<Banknote> banknotes;
+        private Integer calcResult = 0;
+        private BanknoteStore store;
+
+        CalculationObject(BanknoteStore store) {
+            this.store = store;
+            banknotes = new ArrayList<>();
+        }
+
+        void fetchBanknote(BanknoteType banknoteType, Integer decrement){
+            banknotes.add(new Banknote(banknoteType));
+            store.setBalance(banknoteType,decrement);
+            calcResult += banknoteType.getValue();
+        }
+
+        private void checkResult(Integer sum){
+            int total = banknotes.stream().map(item-> item.getType().getValue()).mapToInt(i->i).sum();
+
+            if(total < sum)
+                throw new NotEnoughMoneyException();
+        }
     }
 
 }

@@ -46,8 +46,8 @@ public class AtmApplication {
 
 		System.out.println("Wrong Banknote type: "+receive);
 		System.out.println("Current balance: " + banknoteAtm.getBalance());
-		System.out.println("List banknotes: "+banknoteAtm.getSum(6000));
-		int sum = banknoteAtm.getSum(6000).stream().map(item -> item.getType().getValue()).mapToInt(i -> i).sum();
+		System.out.println("List banknotes: "+banknoteAtm.getSum(8350));
+		int sum = banknoteAtm.getSum(8350).stream().map(item -> item.getType().getValue()).mapToInt(i -> i).sum();
 		System.out.println("Sum: "+ sum);
 		System.out.println("Balance: "+ (banknoteAtm.getBalance() - sum));
 	}
