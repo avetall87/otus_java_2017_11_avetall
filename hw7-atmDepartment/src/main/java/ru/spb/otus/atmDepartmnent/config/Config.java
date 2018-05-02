@@ -9,10 +9,7 @@ import ru.spb.otus.atmDepartmnent.atm.service.Atm;
 import ru.spb.otus.atmDepartmnent.atm.service.BanknoteAtm;
 import ru.spb.otus.atmDepartmnent.atm.service.impl.AtmImpl;
 import ru.spb.otus.atmDepartmnent.department.AtmDepartment;
-import ru.spb.otus.atmDepartmnent.department.ListBanknoteAtm;
-
-import java.util.ArrayList;
-import java.util.List;
+import ru.spb.otus.atmDepartmnent.department.BanknoteAtmList;
 
 /**
  * Created by avetall  02.05.18.
@@ -27,8 +24,8 @@ public class Config {
     private String defaultBanknote;
 
     @Bean
-    public ListBanknoteAtm getAtms(){
-        ListBanknoteAtm atms = new ListBanknoteAtm();
+    public BanknoteAtmList getAtms(){
+        BanknoteAtmList atms = new BanknoteAtmList();
 
         for (int i = 0; i < atmCount; i++) {
             atms.add(getDefaultBanknoteAtm());
@@ -38,7 +35,7 @@ public class Config {
     }
 
     @Bean
-    public AtmDepartment getAtmDepartment(ListBanknoteAtm atms){
+    public AtmDepartment getAtmDepartment(BanknoteAtmList atms){
         AtmDepartment department = new AtmDepartment(atms);
         return department;
     }

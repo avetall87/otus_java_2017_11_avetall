@@ -9,11 +9,11 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 @Getter
 public class AtmDepartment {
-    private ListBanknoteAtm atms;
+    private BanknoteAtmList atms;
     private EventManager events;
     public static final String INITIAL_STATE_EVENT= "initialState";
 
-    public AtmDepartment(ListBanknoteAtm atms) {
+    public AtmDepartment(BanknoteAtmList atms) {
         this.atms = atms;
         this.events = new EventManager(INITIAL_STATE_EVENT);
         events.subscribe(INITIAL_STATE_EVENT, atms);

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by avetall  02.05.18.
  */
-public class ListBanknoteAtm extends ArrayList<BanknoteAtm> implements EventListener {
+public class BanknoteAtmList extends ArrayList<BanknoteAtm> implements EventListener {
 
     @Override
     public void update() {
