@@ -1,4 +1,4 @@
-package ru.spb.otus.jdbc.jdbc.Connection;
+package ru.spb.otus.jdbc.jdbc.dao.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
