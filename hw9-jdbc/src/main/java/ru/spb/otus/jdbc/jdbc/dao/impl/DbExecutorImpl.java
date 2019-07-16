@@ -1,12 +1,12 @@
 package ru.spb.otus.jdbc.jdbc.dao.impl;
 
-import ru.spb.otus.jdbc.jdbc.dao.DbExecuter;
+import ru.spb.otus.jdbc.jdbc.dao.DbExecutor;
 import ru.spb.otus.jdbc.jdbc.dao.utils.DBConnectionHelper;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 
-public class DbExecuterImpl extends DBConnectionHelper implements DbExecuter {
+public class DbExecutorImpl extends DBConnectionHelper implements DbExecutor {
 
     @Override
     public void executeStatement(String sql) {

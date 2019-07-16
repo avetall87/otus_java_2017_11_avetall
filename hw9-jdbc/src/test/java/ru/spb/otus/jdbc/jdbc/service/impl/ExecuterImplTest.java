@@ -1,23 +1,50 @@
 package ru.spb.otus.jdbc.jdbc.service.impl;
 
-import lombok.Data;
+
+import com.github.dockerjava.api.command.CreateContainerCmd;
+import com.github.dockerjava.api.model.ExposedPort;
+import com.github.dockerjava.api.model.PortBinding;
+import com.github.dockerjava.api.model.Ports;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.spb.otus.jdbc.jdbc.dao.impl.DbExecuterImpl;
+import org.testcontainers.containers.PostgreSQLContainer;
+import ru.spb.otus.jdbc.jdbc.dao.impl.DbExecutorImpl;
+import ru.spb.otus.jdbc.jdbc.dao.utils.DBInitialize;
 import ru.spb.otus.jdbc.jdbc.domain.DataSet;
-import ru.spb.otus.jdbc.jdbc.domain.UserDataSet;
 import ru.spb.otus.jdbc.jdbc.service.Executer;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.function.Consumer;
 
 class ExecuterImplTest {
 
     private Executer executer;
+    private PostgreSQLContainer postgreSQLContainer;
 
     @BeforeEach
     void setUp() {
 
-        executer = new ExecuterImpl(new DbExecuterImpl());
+        int hostPort = 5432;
+        int containerExposedPort = 5432;
+        Consumer<CreateContainerCmd> cmd = e -> e.withPortBindings(new PortBinding(Ports.Binding.bindPort(hostPort), new ExposedPort(containerExposedPort)));
+
+        postgreSQLContainer = new PostgreSQLContainer("postgres:9.6.2")
+                .withUsername("postgres")
+                .withPassword("docker")
+                .withDatabaseName("postgres");
+        postgreSQLContainer.addExposedPort(5432);
+        postgreSQLContainer.withCreateContainerCmdModifier(cmd);
+
+        postgreSQLContainer.start();
+
+        executer = new ExecuterImpl(new DbExecutorImpl());
+
+        new DBInitialize().initStructure();
+    }
+
+    @AfterEach
+    void tearDown(){
+        postgreSQLContainer.stop();
     }
 
     @Test
@@ -28,6 +55,8 @@ class ExecuterImplTest {
         dataSet.setAge(30);
 
         executer.save(dataSet);
+
+        System.out.println("End test !");
     }
 
 

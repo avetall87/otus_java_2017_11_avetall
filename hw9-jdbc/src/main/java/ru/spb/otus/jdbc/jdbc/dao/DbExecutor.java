@@ -1,5 +1,5 @@
 package ru.spb.otus.jdbc.jdbc.dao;
 
-public interface DbExecuter {
+public interface DbExecutor {
     void executeStatement(String sql);
 }

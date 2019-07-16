@@ -1,7 +1,7 @@
 package ru.spb.otus.jdbc.jdbc.service.impl;
 
 import lombok.SneakyThrows;
-import ru.spb.otus.jdbc.jdbc.dao.DbExecuter;
+import ru.spb.otus.jdbc.jdbc.dao.DbExecutor;
 import ru.spb.otus.jdbc.jdbc.domain.DataSet;
 import ru.spb.otus.jdbc.jdbc.service.ClassMetadataService;
 import ru.spb.otus.jdbc.jdbc.service.Executer;
@@ -11,9 +11,9 @@ import java.util.*;
 
 public class ExecuterImpl implements Executer {
 
-    private DbExecuter executer;
+    private DbExecutor executer;
 
-    public ExecuterImpl(DbExecuter executer) {
+    public ExecuterImpl(DbExecutor executer) {
         this.executer = executer;
     }
 
@@ -61,5 +61,9 @@ public class ExecuterImpl implements Executer {
         }
 
         return insert + fields.toString() + ")" + " values (" + values.toString() + ")";
+    }
+
+    private String findSqlCreator() {
+        return "";
     }
 }

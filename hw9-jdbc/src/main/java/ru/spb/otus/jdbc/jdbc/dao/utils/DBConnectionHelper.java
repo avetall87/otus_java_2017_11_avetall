@@ -10,6 +10,7 @@ public class DBConnectionHelper {
         try {
             DriverManager.registerDriver(new org.postgresql.Driver());
 
+            // default port is 5432
             String url = "jdbc:postgresql://localhost/postgres";
 
             Properties props = new Properties();
