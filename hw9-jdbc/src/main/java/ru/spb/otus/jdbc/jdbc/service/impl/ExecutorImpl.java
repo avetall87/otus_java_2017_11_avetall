@@ -4,17 +4,19 @@ import lombok.SneakyThrows;
 import ru.spb.otus.jdbc.jdbc.dao.DbExecutor;
 import ru.spb.otus.jdbc.jdbc.domain.DataSet;
 import ru.spb.otus.jdbc.jdbc.service.ClassMetadataService;
-import ru.spb.otus.jdbc.jdbc.service.Executer;
+import ru.spb.otus.jdbc.jdbc.service.Executor;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.util.*;
 
-public class ExecuterImpl implements Executer {
+public class ExecutorImpl implements Executor {
 
-    private DbExecutor executer;
+    private DbExecutor executor;
 
-    public ExecuterImpl(DbExecutor executer) {
-        this.executer = executer;
+    public ExecutorImpl(DbExecutor executor) {
+        this.executor = executor;
     }
 
     @SneakyThrows({IllegalAccessException.class, NoSuchFieldException.class})
@@ -36,16 +38,22 @@ public class ExecuterImpl implements Executer {
                             throw new RuntimeException("Wrong class name !");
                     }
                 }
-                executer.executeStatement(saveSqlCreator(objectData));
+                executor.executeStatement(saveSqlCreator(objectData));
             } else {
                 throw new RuntimeException("Wrong fields count in object, must be two fields: name and age !");
             }
         }
     }
 
+    @SneakyThrows({IllegalAccessException.class, InstantiationException.class, SQLException.class, InvocationTargetException.class})
     @Override
     public <T extends DataSet> T load(long id, Class<T> clazz) {
-        return null;
+
+        if (id == 0) {
+            return null;
+        }
+
+        return executor.findById(id, clazz);
     }
 
     private String saveSqlCreator(Map<String, String> objectData) {
@@ -61,9 +69,5 @@ public class ExecuterImpl implements Executer {
         }
 
         return insert + fields.toString() + ")" + " values (" + values.toString() + ")";
-    }
-
-    private String findSqlCreator() {
-        return "";
     }
 }

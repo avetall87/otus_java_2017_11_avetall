@@ -6,19 +6,21 @@ import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.PortBinding;
 import com.github.dockerjava.api.model.Ports;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.PostgreSQLContainer;
 import ru.spb.otus.jdbc.jdbc.dao.impl.DbExecutorImpl;
 import ru.spb.otus.jdbc.jdbc.dao.utils.DBInitialize;
-import ru.spb.otus.jdbc.jdbc.domain.DataSet;
-import ru.spb.otus.jdbc.jdbc.service.Executer;
+import ru.spb.otus.jdbc.jdbc.domain.NewUser;
+import ru.spb.otus.jdbc.jdbc.service.Executor;
 
+import java.sql.SQLException;
 import java.util.function.Consumer;
 
-class ExecuterImplTest {
+class ExecutorImplTest {
 
-    private Executer executer;
+    private Executor executor;
     private PostgreSQLContainer postgreSQLContainer;
 
     @BeforeEach
@@ -28,7 +30,7 @@ class ExecuterImplTest {
         int containerExposedPort = 5432;
         Consumer<CreateContainerCmd> cmd = e -> e.withPortBindings(new PortBinding(Ports.Binding.bindPort(hostPort), new ExposedPort(containerExposedPort)));
 
-        postgreSQLContainer = new PostgreSQLContainer("postgres:9.6.2")
+        postgreSQLContainer = new PostgreSQLContainer("postgres:11.4")
                 .withUsername("postgres")
                 .withPassword("docker")
                 .withDatabaseName("postgres");
@@ -37,7 +39,7 @@ class ExecuterImplTest {
 
         postgreSQLContainer.start();
 
-        executer = new ExecuterImpl(new DbExecutorImpl());
+        executor = new ExecutorImpl(new DbExecutorImpl());
 
         new DBInitialize().initStructure();
     }
@@ -54,30 +56,26 @@ class ExecuterImplTest {
         dataSet.setName("Super test Test");
         dataSet.setAge(30);
 
-        executer.save(dataSet);
+        executor.save(dataSet);
 
         System.out.println("End test !");
     }
 
+    @Test
+    void load() throws IllegalAccessException, SQLException, InstantiationException {
+        NewUser dataSet = new NewUser();
+        dataSet.setId(10L);
+        dataSet.setName("Super test Test");
+        dataSet.setAge(30);
 
-    private class NewUser extends DataSet {
-        private String name;
-        private Integer age;
+        executor.save(dataSet);
 
-        public String getName() {
-            return name;
-        }
+        save();
 
-        public void setName(String name) {
-            this.name = name;
-        }
+        NewUser user = executor.load(1L, NewUser.class);
 
-        public Integer getAge() {
-            return age;
-        }
-
-        public void setAge(Integer age) {
-            this.age = age;
-        }
+        Assertions.assertNotNull(user.getId());
+        Assertions.assertNotNull(user.getName());
+        Assertions.assertNotNull(user.getAge());
     }
 }
