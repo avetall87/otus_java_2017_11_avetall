@@ -1,0 +1,45 @@
+export CATALINA_OPTS="$CATALINA_OPTS
+-Xms16384m
+-Xmx16384m
+-XX:MetaspaceSize=512m
+-XX:MaxMetaspaceSize=1024m
+-XX:+UseParNewGC
+-XX:ParallelGCThreads=6
+-XX:+UseConcMarkSweepGC
+-XX:+CMSParallelRemarkEnabled
+-XX:+CMSCompactWhenClearAllSoftRefs
+-XX:CMSInitiatingOccupancyFraction=85
+-XX:+CMSScavengeBeforeRemark
+-XX:MaxTenuringThreshold=5
+-XX:SurvivorRatio=6
+-XX:NewRatio=3
+-XX:TargetSurvivorRatio=90
+-XX:MaxTenuringThreshold=15
+-XX:+UseLargePages
+-XX:LargePageSizeInBytes=2m
+-Xloggc:/opt/tomcat/logs/gc.log
+-XX:+PrintGCDetails
+-XX:+PrintGCDateStamps
+-XX:+PrintGCTimeStamps
+-XX:+UseGCLogFileRotation
+-XX:NumberOfGCLogFiles=10
+-XX:GCLogFileSize=10M
+-XX:+PrintTenuringDistribution
+-Dspring.config.location=file:/opt/config/application.properties,file:/opt/config/env.properties
+-Djava.rmi.server.hostname=app.pvv.kzags.gov.spb.ru -Dcom.sun.management.jmxremote
+-Dcom.sun.management.jmxremote.port=9100
+-Dcom.sun.management.jmxremote.rmi.port=9100
+-Dcom.sun.management.jmxremote.ssl=false
+-Dcom.sun.management.jmxremote.authenticate=false"
+---------------------------------------------------------------------------------------------------------------
+export CATALINA_OPTS="$CATALINA_OPTS
+-Xms5376m
+-Xmx10752m
+-XX:MetaspaceSize=256m
+-XX:MaxMetaspaceSize=1024m
+-Dspring.config.location=file:/opt/config/application.properties,file:/opt/config/env.properties
+-Djava.rmi.server.hostname=app.pvv.kzags.gov.spb.ru -Dcom.sun.management.jmxremote
+-Dcom.sun.management.jmxremote.port=9100
+-Dcom.sun.management.jmxremote.rmi.port=9100
+-Dcom.sun.management.jmxremote.ssl=false
+-Dcom.sun.management.jmxremote.authenticate=false"

@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: docker
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - /Users/avetall/Development/Storage/db_volumns/pgdata:/var/lib/postgresql/data
+
+  sonarqube:
+    image: sonarqube
+    ports:
+      - "9000:9000"
+    networks:
+      - sonarnet
+    volumes:
+      - /Users/avetall/Development/Storage/sonarqube/config:/opt/sonarqube/conf
+      - /Users/avetall/Development/Storage/sonarqube/data:/opt/sonarqube/data
+      - /Users/avetall/Development/Storage/sonarqube/logs:/opt/sonarqube/logs
+      - /Users/avetall/Development/Storage/sonarqube/extensions:/opt/sonarqube/extensions
+
+networks:
+  sonarnet:
+    driver: bridge
